@@ -22,14 +22,14 @@
 			contraSide = "top";
 		}
 
-		var fullWidth = $.fn.outerWidth;
+		$.fn.fullWidth = $.fn.outerWidth;
 		if(side == "top" || side == "bottom") {
-			fullWidth = $.fn.outerHeight;
+			$.fn.fullWidth = $.fn.outerHeight;
 		}
 
-		var containWidth = $.fn.width;
+		$.fn.containWidth = $.fn.width;
 		if(side == "top" || side == "bottom") {
-			containWidth = $.fn.height;
+			$.fn.containWidth = $.fn.height;
 		}
 
 		var wideProp = "width";
@@ -49,12 +49,12 @@
 		if($viewBtn) {
 			$viewBtn.css('position', 'absolute')
 					.css(contraSide, '0px')
-					.css('width', $viewBtn.width());
-			toolMainPos = $viewBtn.outerWidth() + 1;
+					.css(wideProp, $viewBtn.containWidth());
+			toolMainPos = $viewBtn.fullWidth() + 1;
 		}
 		$toolMain.css('position', 'absolute')
 				.css(contraSide, toolMainPos + 'px')
-				.css('width', $toolMain.width() + 'px');
+				.css(wideProp, $toolMain.width() + 'px');
 
 
 		if(set['firstView']) {
@@ -62,13 +62,13 @@
 			$this.css(side, '0px');
 		} else {
 			$this.addClass('toolHide');
-			$this.css(side, -1 * ($toolMain.outerWidth()) + 'px');
+			$this.css(side, -1 * ($toolMain.fullWidth()) + 'px');
 		}
 
 		var anim = {};
 		$this.bind('onNotify', function() {
 			if($this.hasClass('toolShow')) {
-				anim[side] = -1 * ($toolMain.outerWidth()) + 'px';
+				anim[side] = -1 * ($toolMain.fullWidth()) + 'px';
 				$this.animate(anim, function() {
 					$this.addClass('toolHide');
 					$this.removeClass('toolShow');
@@ -89,11 +89,11 @@
 		});
 
 		var thisWidth;
-		thisWidth = $toolMain.outerWidth();
+		thisWidth = $toolMain.fullWidth();
 		if($viewBtn) {
-			thisWidth = thisWidth + $viewBtn.outerWidth();
+			thisWidth = thisWidth + $viewBtn.fullWidth();
 		}
-		$this.css('width', thisWidth + 'px');
+		$this.css(wideProp, thisWidth + 'px');
 
 		return (this);
 	}

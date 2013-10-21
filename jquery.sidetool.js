@@ -3,12 +3,17 @@
 	$.fn.sidetool = function(opt) {
 		var def = {
 			'side': 'right',
-			'firstView': false
+			'firstView': false,
+			'AfterOpenFunc': function() { },
+			'AfterCloseFunc': function() { }
 		}
 		var set = $.extend(def, opt);
 		var side = set['side'];
 		var $toolMain = this.find('.toolMain');
 		var $this = this;
+
+		var AfterOpenFunc = set['AfterOpenFunc'];
+		var AfterCloseFunc = set['AfterCloseFunc'];
 
 		if(!(side == "left" || side == "top" || side == "bottom")) {
 			side = "right";
@@ -72,21 +77,25 @@
 				$this.animate(anim, function() {
 					$this.addClass('toolHide');
 					$this.removeClass('toolShow');
+					AfterCloseFunc();
 				})
 			} else if($this.hasClass('toolHide')) {
 				anim[side] = '0px';
 				$this.animate(anim, function() {
 					$this.addClass('toolShow');
 					$this.removeClass('toolHide');
+					AfterOpenFunc();
 				})
 			} else {
 
 			}
 		});
 
-		$viewBtn.click(function() {
-			$this.trigger('onNotify');
-		});
+		if($viewBtn) {
+			$viewBtn.click(function() {
+				$this.trigger('onNotify');
+			});
+		}
 
 		var thisWidth;
 		thisWidth = $toolMain.fullWidth();
